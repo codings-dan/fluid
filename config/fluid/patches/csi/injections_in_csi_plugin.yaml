@@ -9,6 +9,6 @@ spec:
       containers:
         # change the following two images if necessary
         - name: node-driver-registrar
-          image: registry.cn-hangzhou.aliyuncs.com/acs/csi-node-driver-registrar:v1.2.0
+          image: mirrors.tencent.com/alluxio/alluxiotest/fluid/csi-node-driver-registrar:v1.2.0
         - name: plugins
-          image: registry.cn-hangzhou.aliyuncs.com/fluid/fluid-csi:v0.5.0-e1bcf97
+          image: mirrors.tencent.com/alluxio/alluxiotest/fluid/fluid-csi:0.1

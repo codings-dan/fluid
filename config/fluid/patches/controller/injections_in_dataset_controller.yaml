@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: manager
-          image: registry.cn-hangzhou.aliyuncs.com/fluid/dataset-controller:v0.5.0-e1bcf97
+          image: mirrors.tencent.com/alluxio/alluxiotest/fluid/dataset-controller:0.1
           env:
             - name: ALLUXIO_DATALOAD_IMAGE_ENV
-              value: registry.cn-huhehaote.aliyuncs.com/alluxio/alluxio:2.3.0-SNAPSHOT-2c41226
+              value: alluxio/alluxio:2.6.2-tq-1.3.1-konajdk11

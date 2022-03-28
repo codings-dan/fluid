@@ -3,11 +3,12 @@ CRD_OPTIONS ?= "crd"
 
 # The Image URL to use in docker build and push
 # IMG_REPO ?= registry.aliyuncs.com/fluid
-IMG_REPO ?= fluidcloudnative
+IMG_REPO ?= mirrors.tencent.com/alluxio/alluxiotest/fluid
 DATASET_CONTROLLER_IMG ?= ${IMG_REPO}/dataset-controller
 ALLUXIORUNTIME_CONTROLLER_IMG ?= ${IMG_REPO}/alluxioruntime-controller
 JINDORUNTIME_CONTROLLER_IMG ?= ${IMG_REPO}/jindoruntime-controller
 GOOSEFSRUNTIME_CONTROLLER_IMG ?= ${IMG_REPO}/goosefsruntime-controller
+JUICEFSRUNTIME_CONTROLLER_IMG ?= ${IMG_REPO}/juicefsruntime-controller
 JUICEFSRUNTIME_CONTROLLER_IMG ?= ${IMG_REPO}/juicefsruntime-controller
 CSI_IMG ?= ${IMG_REPO}/fluid-csi
 LOADER_IMG ?= ${IMG_REPO}/fluid-dataloader
@@ -30,35 +31,36 @@ GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_TAG=$(shell if [ -z "`git status --porcelain`" ]; then git describe --exact-match --tags HEAD 2>/dev/null; fi)
 GIT_TREE_STATE=$(shell if [ -z "`git status --porcelain`" ]; then echo "clean" ; else echo "dirty"; fi)
 GIT_SHA=$(shell git rev-parse --short HEAD || echo "HEAD")
-GIT_VERSION=${VERSION}-${GIT_SHA}
+#GIT_VERSION=${VERSION}-${GIT_SHA}
+GIT_VERSION=0.1
 PACKAGE=github.com/fluid-cloudnative/fluid
 
 # Build binaries
 BINARY_BUILD := dataset-controller-build
 BINARY_BUILD += alluxioruntime-controller-build
-BINARY_BUILD += jindoruntime-controller-build
-BINARY_BUILD += juicefsruntime-controller-build
+#BINARY_BUILD += jindoruntime-controller-build
+#BINARY_BUILD += juicefsruntime-controller-build
 BINARY_BUILD += csi-build
 BINARY_BUILD += webhook-build
 
 # Build docker images
 DOCKER_BUILD := docker-build-dataset-controller
 DOCKER_BUILD += docker-build-alluxioruntime-controller
-DOCKER_BUILD += docker-build-jindoruntime-controller
-DOCKER_BUILD += docker-build-goosefsruntime-controller
+#DOCKER_BUILD += docker-build-jindoruntime-controller
+#DOCKER_BUILD += docker-build-goosefsruntime-controller
 DOCKER_BUILD += docker-build-csi
 DOCKER_BUILD += docker-build-webhook
-DOCKER_BUILD += docker-build-juicefsruntime-controller
+#DOCKER_BUILD += docker-build-juicefsruntime-controller
 DOCKER_BUILD += docker-build-init-users
 
 # Push docker images
 DOCKER_PUSH := docker-push-dataset-controller
 DOCKER_PUSH += docker-push-alluxioruntime-controller
-DOCKER_PUSH += docker-push-jindoruntime-controller
+#DOCKER_PUSH += docker-push-jindoruntime-controller
 DOCKER_PUSH += docker-push-csi
 DOCKER_PUSH += docker-push-webhook
-DOCKER_PUSH += docker-push-goosefsruntime-controller
-DOCKER_PUSH += docker-push-juicefsruntime-controller
+#DOCKER_PUSH += docker-push-goosefsruntime-controller
+#DOCKER_PUSH += docker-push-juicefsruntime-controller
 DOCKER_PUSH += docker-push-init-users
 
 override LDFLAGS += \
@@ -177,31 +179,31 @@ docker-build-webhook:
 	docker build --no-cache . -f docker/Dockerfile.webhook -t ${WEBHOOK_IMG}:${GIT_VERSION}
 
 # Push the docker image
-docker-push-dataset-controller: docker-build-dataset-controller
+docker-push-dataset-controller:
 	docker push ${DATASET_CONTROLLER_IMG}:${GIT_VERSION}
 
-docker-push-alluxioruntime-controller: docker-build-alluxioruntime-controller
+docker-push-alluxioruntime-controller:
 	docker push ${ALLUXIORUNTIME_CONTROLLER_IMG}:${GIT_VERSION}
 
-docker-push-jindoruntime-controller: docker-build-jindoruntime-controller
+docker-push-jindoruntime-controller:
 	docker push ${JINDORUNTIME_CONTROLLER_IMG}:${GIT_VERSION}
 
-docker-push-goosefsruntime-controller: docker-build-goosefsruntime-controller
+docker-push-goosefsruntime-controller:
 	docker push ${GOOSEFSRUNTIME_CONTROLLER_IMG}:${GIT_VERSION}
 
-docker-push-juicefsruntime-controller: docker-build-juicefsruntime-controller
+docker-push-juicefsruntime-controller:
 	docker push ${JUICEFSRUNTIME_CONTROLLER_IMG}:${GIT_VERSION}
 
-docker-push-csi: docker-build-csi
+docker-push-csi:
 	docker push ${CSI_IMG}:${GIT_VERSION}
 
-docker-push-loader: docker-build-loader
+docker-push-loader:
 	docker push ${LOADER_IMG}
 
-docker-push-init-users: docker-build-init-users
+docker-push-init-users:
 	docker push ${INIT_USERS_IMG}:${GIT_VERSION}
 
-docker-push-webhook: docker-build-webhook
+docker-push-webhook:
 	docker push ${WEBHOOK_IMG}:${GIT_VERSION}
 
 

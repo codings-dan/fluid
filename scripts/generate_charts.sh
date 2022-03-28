@@ -1,0 +1,1 @@
+helm install test -f charts.yaml  /Users/admina/go/src/github.com/fluid-cloudnative/fluid/charts/alluxio --dry-run --debug

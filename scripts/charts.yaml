@@ -1,0 +1,227 @@
+fullnameOverride: testzz
+image: harbor.weizhipin.com/arsenal-oceanus/alluxio/alluxio
+imageTag: 2.6.0
+imagePullPolicy: Always
+user: 0
+group: 0
+fsGroup: 0
+properties:
+  alluxio.fuse.cached.paths.max: "1000000"
+  alluxio.fuse.jnifuse.enabled: "true"
+  alluxio.fuse.logging.threshold: 1000ms
+  alluxio.fuse.shared.caching.reader.enabled: "false"
+  alluxio.fuse.user.group.translation.enabled: "true"
+  alluxio.job.master.embedded.journal.port: "22142"
+  alluxio.job.master.finished.job.retention.time: 30sec
+  alluxio.job.master.rpc.port: "22135"
+  alluxio.job.master.web.port: "22136"
+  alluxio.job.worker.data.port: "22139"
+  alluxio.job.worker.rpc.port: "22137"
+  alluxio.job.worker.threadpool.size: "200"
+  alluxio.job.worker.web.port: "22138"
+  alluxio.master.audit.logging.enabled: "true"
+  alluxio.master.audit.logging.queue.capacity: "100000"
+  alluxio.master.embedded.journal.addresses: testzz-master-0:22141,testzz-master-1:22141,testzz-master-2:22141
+  alluxio.master.embedded.journal.port: "22141"
+  alluxio.master.embedded.journal.transport.request.timeout.ms: 1sec
+  alluxio.master.journal.folder: /journal
+  alluxio.master.journal.log.size.bytes.max: 500MB
+  alluxio.master.journal.type: EMBEDDED
+  alluxio.master.metadata.sync.concurrency.level: "1280"
+  alluxio.master.metadata.sync.executor.pool.size: "1280"
+  alluxio.master.metadata.sync.ufs.prefetch.pool.size: "1280"
+  alluxio.master.metastore: ROCKS
+  alluxio.master.metastore.dir: /metastore
+  alluxio.master.metastore.inode.cache.max.size: "1000000"
+  alluxio.master.mount.table.root.ufs: /underFSStorage
+  alluxio.master.persistence.blacklist: .staging,_temporary,.tmp
+  alluxio.master.rpc.executor.core.pool.size: "512"
+  alluxio.master.rpc.executor.max.pool.size: "2048"
+  alluxio.master.rpc.port: "22131"
+  alluxio.master.security.impersonation.root.groups: '*'
+  alluxio.master.security.impersonation.root.users: '*'
+  alluxio.master.web.port: "22132"
+  alluxio.network.connection.auth.timeout: 900sec
+  alluxio.network.connection.server.shutdown.timeout: 180sec
+  alluxio.network.connection.shutdown.graceful.timeout: 180sec
+  alluxio.network.connection.shutdown.timeout: 180sec
+  alluxio.proxy.web.port: "22140"
+  alluxio.security.authorization.permission.enabled: "true"
+  alluxio.security.authorization.permission.umask: "027"
+  alluxio.security.login.impersonation.username: _NONE_
+  alluxio.security.stale.channel.purge.interval: 365d
+  alluxio.underfs.object.store.breadcrumbs.enabled: "false"
+  alluxio.underfs.s3.admin.threads.max: "1000"
+  alluxio.underfs.s3.threads.max: "1200"
+  alluxio.user.block.avoid.eviction.policy.reserved.size.bytes: 2GB
+  alluxio.user.block.master.client.pool.gc.threshold: 10min
+  alluxio.user.block.master.client.threads: "2048"
+  alluxio.user.block.size.bytes.default: 16MB
+  alluxio.user.block.worker.client.pool.max: "10000"
+  alluxio.user.block.worker.client.pool.min: "512"
+  alluxio.user.block.write.location.policy.class: alluxio.client.block.policy.MostAvailableFirstPolicy
+  alluxio.user.client.cache.enabled: "false"
+  alluxio.user.file.create.ttl.action: FREE
+  alluxio.user.file.delete.unchecked: "true"
+  alluxio.user.file.master.client.threads: "1024"
+  alluxio.user.file.passive.cache.enabled: "false"
+  alluxio.user.file.persist.on.rename: "true"
+  alluxio.user.file.readtype.default: CACHE
+  alluxio.user.file.replication.max: "1"
+  alluxio.user.file.waitcompleted.poll: 180sec
+  alluxio.user.file.writetype.default: ASYNC_THROUGH
+  alluxio.user.local.reader.chunk.size.bytes: 32MB
+  alluxio.user.logging.threshold: 1000ms
+  alluxio.user.metadata.cache.enabled: "true"
+  alluxio.user.metadata.cache.expiration.time: 2min
+  alluxio.user.metadata.cache.max.size: "6000000"
+  alluxio.user.metrics.collection.enabled: "true"
+  alluxio.user.rpc.retry.max.duration: 6min
+  alluxio.user.streaming.data.timeout: 300sec
+  alluxio.user.streaming.reader.buffer.size.messages: "1024"
+  alluxio.user.streaming.reader.chunk.size.bytes: 32MB
+  alluxio.user.ufs.block.read.location.policy: alluxio.client.block.policy.DeterministicHashPolicy
+  alluxio.user.update.file.accesstime.disabled: "true"
+  alluxio.user.worker.list.refresh.interval: 30sec
+  alluxio.web.ui.enabled: "false"
+  alluxio.worker.allocator.class: alluxio.worker.block.allocator.MaxFreeAllocator
+  alluxio.worker.block.master.client.pool.size: "2048"
+  alluxio.worker.management.tier.align.reserved.bytes: 1G
+  alluxio.worker.network.block.writer.threads.max: "10000"
+  alluxio.worker.network.flowcontrol.window: 200MB
+  alluxio.worker.network.max.inbound.message.size: 200MB
+  alluxio.worker.network.reader.buffer.size: 32MB
+  alluxio.worker.network.writer.buffer.size.messages: "100"
+  alluxio.worker.rpc.port: "22133"
+  alluxio.worker.web.port: "22134"
+master:
+  jvmOptions:
+    - -Xmx10g
+    - -Xms10g
+  env:
+    ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_DIRS_PATH: /data/arsenal/storage/testzz
+  affinity:
+    nodeAffinity: null
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: "5"
+      memory: 10Gi
+    limits:
+      cpu: "5"
+      memory: 10Gi
+  ports:
+    rpc: 22131
+    web: 22132
+    embedded: 22141
+  backupPath: /tmp/alluxio-backup/kf-partition/testzz
+  volumemounts: []
+  volumes: []
+  tolerations: []
+jobMaster:
+  jvmOptions:
+    - -Xmx2g
+    - -Xms2g
+  ports:
+    rpc: 22135
+    web: 22136
+    embedded: 22142
+  resources:
+    requests:
+      cpu: "2"
+    limits:
+      cpu: "4"
+worker:
+  jvmOptions:
+    - -Xmx20g
+    - -Xms20g
+    - -XX:MaxDirectMemorySize=40g
+  env:
+    ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_DIRS_PATH: /data/arsenal/storage/testzz
+  nodeSelector:
+    fluid.io/s-kf-partition-testzz: "true"
+  resources:
+    requests:
+      cpu: "8"
+      memory: 60Gi
+    limits:
+      cpu: "8"
+      memory: 60Gi
+  ports:
+    rpc: 22133
+    web: 22134
+  volumemounts: []
+  startreplicas: 1
+  maxreplicas: 1
+  ingressBandwidth: 6G
+  egressBandwidth: 6G
+jobWorker:
+  jvmOptions:
+    - -Xmx8g
+    - -Xms8g
+  ports:
+    rpc: 22137
+    web: 22138
+    data: 22139
+  resources:
+    requests:
+      cpu: "4"
+      memory: 8Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
+fuse:
+  image: harbor.weizhipin.com/arsenal-oceanus/alluxio/alluxio-fuse
+  imageTag: 2.6.0
+  env:
+    MAX_IDLE_THREADS: "64"
+    MOUNT_POINT: /runtime-mnt/alluxio/kf-partition/testzz/alluxio-fuse
+  jvmOptions:
+    - -Xmx4g
+    - -Xms4g
+  mountPath: /runtime-mnt/alluxio/kf-partition/testzz/alluxio-fuse
+  args:
+    - fuse
+    - --fuse-opts=kernel_cache,rw,max_read=131072,attr_timeout=7200,entry_timeout=7200,nonempty,allow_other
+  enabled: true
+  resources:
+    requests:
+      cpu: "1"
+      memory: 4Gi
+    limits:
+      cpu: "1"
+      memory: 4Gi
+  ingressBandwidth: 6G
+  egressBandwidth: 6G
+apiGateway:
+  enabled: true
+  ports:
+    rest: 22140
+  volumemounts: []
+tieredstore:
+  levels:
+    - alias: SSD
+      level: 0
+      mediumtype: SSD
+      type: hostPath
+      path: /data/arsenal/storage/testzz
+      quota: 1GB
+      high: "0.99"
+      low: "0.99"
+journal:
+  volumeType: emptyDir
+  size: 30Gi
+shortCircuit:
+  enable: true
+  policy: local
+  volumeType: emptyDir
+initUsers:
+  image: registry.cn-hangzhou.aliyuncs.com/fluid/init-users
+  imageTag: v0.3.0-1467caa
+  imagePullPolicy: Always
+  envUsers: ""
+  dir: ""
+  envTieredPaths: ""
+monitoring: alluxio_runtime_metrics
+queue: lab-3
+userName: zhoupeijie
