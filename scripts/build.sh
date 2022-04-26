@@ -18,6 +18,6 @@ cd ..
 #make dataset-controller-build
 #make alluxioruntime-controller-build
 ##make docker-build-dataset-controller
-#make docker-build-alluxioruntime-controller
+make docker-build-alluxioruntime-controller
 ##make docker-push-dataset-controller
 make docker-push-alluxioruntime-controller

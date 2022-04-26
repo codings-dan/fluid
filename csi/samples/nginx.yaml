@@ -4,7 +4,7 @@ metadata:
   name: nginx
 spec:
   containers:
-  - image: nginx
+  - image: mirrors.tencent.com/alluxio/alluxiotest/venus/pytorch-client:v0.6
     imagePullPolicy: Always
     name: nginx
     ports:
@@ -12,8 +12,8 @@ spec:
       protocol: TCP
     volumeMounts:
       - mountPath: /data
-        name: fluid-pvc
+        name: alluxio-cos
   volumes:
-  - name: fluid-pvc
+  - name: alluxio-cos
     persistentVolumeClaim:
-      claimName: fluid-pvc
+      claimName: alluxio-cos

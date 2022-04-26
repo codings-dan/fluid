@@ -70,6 +70,7 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 		glog.Infof("It's already mounted to %v", targetPath)
 		return &csi.NodePublishVolumeResponse{}, nil
 	} else {
+		//mountPath:"/data/kubelet_root_dir/pods/9c6fc4c2-d920-4aa0-9c4a-d4963b92f8db/volumes/kubernetes.io~csi/alluxio-alluxio-cos/mount"
 		glog.Infof("Try to mount to %v", targetPath)
 	}
 
@@ -231,7 +232,7 @@ func (ns *nodeServer) NodeUnstageVolume(ctx context.Context, req *csi.NodeUnstag
 	// Once the label is removed, fuse pod on corresponding node will be terminated
 	// since node selector in the fuse daemonSet no longer matches.
 	// TODO: move all the label keys into a util func
-	fuseLabelKey := common.LabelAnnotationFusePrefix + namespace + "-" + name
+	fuseLabelKey := common.LabelAnnotationFusePrefix + name
 	var labelsToModify common.LabelsToModify
 	labelsToModify.Delete(fuseLabelKey)
 
@@ -256,14 +257,14 @@ func (ns *nodeServer) NodeStageVolume(ctx context.Context, req *csi.NodeStageVol
 	defer ns.mutex.Unlock()
 
 	// 1. get dataset namespace and name by volume id
-	namespace, name, err := volume.GetNamespacedNameByVolumeId(ns.client, req.GetVolumeId())
+	_, name, err := volume.GetNamespacedNameByVolumeId(ns.client, req.GetVolumeId())
 	if err != nil {
 		glog.Errorf("NodeStageVolume: can't get namespace and name by volume id %s: %v", req.GetVolumeId(), err)
 		return nil, errors.Wrapf(err, "NodeStageVolume: can't get namespace and name by volume id %s", req.GetVolumeId())
 	}
 
 	// 2. Label node
-	fuseLabelKey := common.LabelAnnotationFusePrefix + namespace + "-" + name
+	fuseLabelKey := common.LabelAnnotationFusePrefix + name
 	var labelsToModify common.LabelsToModify
 	labelsToModify.Add(fuseLabelKey, "true")
 

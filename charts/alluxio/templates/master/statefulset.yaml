@@ -211,10 +211,8 @@ spec:
             mountPath: /etc/group
             readOnly: true
           {{- end }}
-          {{- if $needJournalVolume }}
           - name: alluxio-journal
             mountPath: /journal
-          {{- end }}
           {{- if .Values.ufsPaths }}   
             {{- range .Values.ufsPaths }}
           - mountPath: {{ .containerPath }}
@@ -394,16 +392,16 @@ spec:
         {{- if .Values.metastore }}
           {{- if eq .Values.metastore.volumeType "emptyDir" }}
         - name: alluxio-metastore
-          emptyDir:
-            medium: {{ .Values.metastore.medium }}
-            sizeLimit: {{ .Values.metastore.size | quote }}
+          hostPath:
+            path: /data23/metastore/{{ $fullName }}/
+            type: DirectoryOrCreate
           {{- end }}
         {{- end}}
         {{- if and $needJournalVolume (eq .Values.journal.volumeType "emptyDir") }}
         - name: alluxio-journal
-          emptyDir:
-            medium: {{ .Values.journal.medium }}
-            sizeLimit: {{ .Values.journal.size | quote }}
+          hostPath:
+            path: /data23/journal/{{ $fullName }}/
+            type: DirectoryOrCreate
         {{- end}}
         {{- if .Values.ufsPaths }}   
           {{- range .Values.ufsPaths }}

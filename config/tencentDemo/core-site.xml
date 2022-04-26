@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<property>
+        <name>tq.auth.compatible</name>
+        <value>true</value>
+</property>
+
+<property>
+        <name>hadoop.security.authentication</name>
+        <value>TAUTH</value>
+</property>
+
+
+<property>
+        <name>ipc.client.fallback-to-simple-auth-allowed</name>
+        <value>true</value>
+</property>
+
+<property>
+        <name>tq.gray.list</name>
+        <value>ss-teg-2-v2,ss-teg-3-v2,ss-teg-4-v2,ss-teg-5-v2,ss-teg-6-v2,ss-sng-dc-v2,ss-sng-3-v2,ss-sng-4-v2,ss-sng-5-v2,ss-sng-6-v2,ss-omg-1-v2,ss-omg-3-v2,ss-omg-4-v2,ss-omg-5-v2,ss-omg-6-v2,ss-omg-ad-bak,ss-mig-1-v2,ss-wxg-v2,ss-wxg-2-v2,ss-wxg-3-v2,ss-wxg-4-v2,ss-wxg-5-v2,ss-wxg-6-v2,ss-wxg-7-v2,ss-wxg-8-v2,ss-cdg-1-v2,ss-cdg-2-v2,ss-cdg-3-v2,ss-cdg-4-v2,ss-cdg-5-v2,ss-cdg-6-v2,ss-cdg-7-v2,ss-cdg-8-v2,ss-cdg-9-v2,ss-cdg-10-v2,ss-cdg-11-v2,ss-cdg-12-v2,ss-cdg-cold1-v2,ss-cdg-13-v2,ss-cdg-cold2-v2,ss-cdg-wxad-v2,ss-tad-1-v2,ss-pcg-1-v2,th-teg-1-v2,th-pcg-1-v2,th-csig-1-v2,tl-ieg-1-v2,tl-ieg-2-v2,tl-ieg-3-v2,tl-ieg-4-v2,tl-ieg-5-v2,tl-ieg-6-v2</value>
+</property>
+
+<property>
+        <name>tauth.no-key.fallback.allowed</name>
+        <value>true</value>
+</property>
+
+<property>
+        <name>tq.delegation.token.op.unlimited</name>
+        <value>true</value>
+</property>
+
+<property>
+        <name>delegation.token.identifier.transmission.version  </name>
+        <value>0</value>
+</property>
+<property>
+        <name>yarn.resourcemanager.principal</name>
+        <value>gaiaadmin</value>
+</property>
+<property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://ss-pcg-4-v2</value>
+</property>
+
+<property>
+    <name>mig.dfs.application.name</name>
+    <value>mtt-spark-new</value>
+</property>
+
+<property>
+    <name>hadoop.cluster.user</name>
+    <value>mqq</value>
+</property>
+<property>
+    <name>hadoop.old.pcg.cluster.ip</name>
+    <value>100.110.20.188,100.110.9.173,100.110.22.38,100.110.21.98,100.110.21.79,100.110.9.234,10.49.136.150,10.121.101.21,10.49.136.154,10.209.20.211,10.224.137.84,10.231.136.213,10.175.120.92,10.175.120.91,10.49.136.233,10.222.4.192,100.107.171.31,10.209.20.148,100.110.21.118,100.110.20.228,100.107.152.210,100.107.171.197,100.110.1.10,100.110.21.14,100.110.21.12,100.110.22.75,9.46.148.135,100.110.21.210,100.110.21.20,9.46.147.25,100.110.15.23,100.110.15.6,100.65.22.5,100.115.31.229,100.110.21.32,100.110.20.244,100.110.22.43,100.110.21.132,100.107.152.225,100.107.171.153,100.77.32.10,100.77.34.3,100.94.4.168,100.94.4.31,10.60.15.37,10.61.84.89,10.160.139.107,10.160.141.39,100.110.21.27,100.110.22.121,100.110.9.244,100.110.22.96,100.110.22.41,100.110.21.44,100.110.21.72,100.110.10.58,100.110.22.26,100.110.21.116,100.95.14.66,100.112.173.173,100.95.13.200,100.112.174.15,9.51.132.194,9.25.9.56,10.61.85.72,10.61.85.138,100.110.20.167,100.110.9.177,9.4.19.13,9.4.18.198,9.24.153.80,9.24.155.84,10.157.85.40,10.193.22.19,10.198.137.41,10.209.20.89,10.233.146.148,10.171.19.17,9.47.0.184,100.77.3.96,100.115.139.35,100.115.139.36,9.4.18.221,9.4.18.140,9.46.23.79,9.46.23.95,9.46.148.144,100.110.9.206,100.110.10.166,100.110.10.182,9.46.22.83,9.46.22.85,9.189.11.69,9.189.11.74,9.189.11.108,9.189.11.119,9.189.18.76,9.189.18.84,9.179.161.195,9.179.161.196,9.47.6.50,9.47.6.85,10.246.143.147,10.58.128.96,beacon,cluster1,szonlineone,safecloud,beacon-qq,newsimpala,weishi01,shipin01,social01,news01,info01,wemeet01,yyb01,100.110.10.119,9.46.3.107,9.46.6.98,9.51.21.56,9.189.10.188,100.107.172.155,100.110.8.177,9.189.10.112,9.46.6.52,9.46.3.11,9.51.132.215,100.107.172.233,10.240.131.10,10.148.138.93</value>
+</property>
+<property>
+    <name>tq.use.ugi</name>
+    <value>true</value>
+</property>
+<property>
+    <name>tq.ugi.list</name>
+    <value>mqq,tdwadmin</value>
+ </property>
+ <property>
+    <name>hadoop.old.pcg.cluster.enable</name>
+    <value>true</value>
+  </property>
+
+  <!-- beacon -->
+
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>beacon</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.beacon.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9011</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.beacon-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9011</value>
+</property>
+
+<!-- dm -->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>dm</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.dm.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9010</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.dm-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9010</value>
+</property>
+
+
+
+<!-- mapcomm -->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>mapcomm</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.mapcomm.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9006</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.mapcomm-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9006</value>
+</property>
+
+<!-- mttcomm -->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>mttcomm</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.mttcomm.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9005</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.mttcomm-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9005</value>
+</property>
+
+<!-- safecloud-->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>safecloud</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.safecloud.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9012</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.safecloud-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9012</value>
+</property>
+
+<!--sh1-->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>sh1</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sh1.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9014</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sh1-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9014</value>
+</property>
+
+<property>
+<name>one.mfs.hdfs.swfour-tq.uri</name>
+<value>hdfs://100.110.10.175:9001</value>
+</property>
+
+<!--swone-->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>swone</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.swone.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9009</value>
+</property>
+<property>
+<name>one.mfs.hdfs.swone-tq.uri</name>
+<value>hdfs://clusters.nngw.venus.woa.com:9009</value>
+</property>
+
+<!--swtwo-->
+<property>
+        <name>mig.mfs.defaultcluster</name>
+        <value>swtwo</value>
+    </property>
+    <property>
+        <name>one.conf.api.instancetype</name>
+        <value>inner_gw</value>
+    </property>
+    <property>
+        <name>one.mfs.hdfs.swtwo.uri</name>
+        <value>hdfs://clusters.nngw.venus.woa.com:9015</value>
+    </property>
+    <property>
+    <name>one.mfs.hdfs.swtwo-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9015</value>
+    </property>
+
+<!--szkuafu-->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>sz-kuafu</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sz-kuafu.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9002</value>
+</property>
+
+<property>
+    <name>one.mfs.hdfs.sz-kuafu-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9002</value>
+</property>
+
+<!--sznew-->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>sz-new</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sz-new.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9016</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sz-new-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9016</value>
+</property>
+
+<!--sz1-->
+
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>sz1</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sz1.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9003</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sz1-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9003</value>
+</property>
+
+<!--sz2-->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>sz2</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sz2.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9008</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.sz2-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9008</value>
+</property>
+
+<!--szrecone-->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>szrecone</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.szrecone.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9007</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.szrecone-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9007</value>
+</property>
+
+<!--yybcomm-->
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>yybcomm</value>
+</property>
+<property>
+    <name>one.conf.api.instancetype</name>
+    <value>inner_gw</value>
+</property>
+<property>
+    <name>one.mfs.hdfs.yybcomm.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9004</value>
+</property>
+
+<property>
+    <name>one.mfs.hdfs.yybcomm-tq.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:9004</value>
+</property>
+
+<!--pub config-->
+
+<property>
+    <name>fs.AbstractFileSystem.mdfs.impl</name>
+    <value>com.mig.dsc.mfs.MFSFs</value>
+</property>
+<property>
+    <name>fs.mdfs.impl</name>
+    <value>com.mig.dsc.mfs.MFSFileSystem</value>
+</property>
+
+<property>
+    <name>one.mfs.silver.gateway.loginappid</name>
+    <value>100008</value>
+</property>
+<property>
+    <name>one.mfs.silver.gateway.loginappkey</name>
+    <value>daf6507ca8274b828db068e12985bd08</value>
+</property>
+
+<property>
+    <name>mig.mfs.defaultcluster</name>
+    <value>cloudhdfs</value>
+</property>
+
+<property>
+    <name>one.mfs.hdfs.cloudhdfs.uri</name>
+    <value>hdfs://clusters.nngw.venus.woa.com:8020</value>
+</property>
+
+<!--disable mdfs schema-->
+<!--
+<property>
+    <name>fs.mdfs.impl</name>
+    <value>org.tencent.pcg.MdfsFileSystem.class</value>
+ </property>
+-->
+
+ <property>
+    <name>one.mfs.hdfs.version</name>
+    <value>2.8.5-tq-0.1.0</value>
+ </property>
+
+ <property>
+    <name>one.conf.cross.writer</name>
+    <value>true</value>
+</property>
+
+<property>
+        <name>hadoop.security.group.mapping</name>
+        <value>org.apache.hadoop.security.TqRestGroupMappingServiceProvider</value>
+</property>
+
+</configuration>

@@ -52,6 +52,13 @@ data:
             time alluxio fs distributedLoad --replication $replica $path
         fi
     }
+
+    function load2() {
+        local path=$1
+        local replica=$2
+        alluxio fs setReplication --max $replica -R $path
+        time alluxio fs load2 --batch-size 500 -actives 40000 --threads 24  $path
+    }
     
     function main() {
         needLoadMetadata="$NEED_LOAD_METADATA"
@@ -67,9 +74,9 @@ data:
         for((i=0;i<${#paths[@]};i++)) do
             local path="${paths[i]}"
             local replica="${replicas[i]}"
-            echo -e "distributedLoad on $path starts"
-            distributedLoad ${paths[i]} ${replicas[i]}
-            echo -e "distributedLoad on $path ends"
+            echo -e "load2 on $path starts"
+            load2 ${paths[i]} ${replicas[i]}
+            echo -e "load2 on $path ends"
         done
     }
     

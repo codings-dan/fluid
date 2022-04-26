@@ -1,0 +1,92 @@
+apiVersion: data.fluid.io/v1alpha1
+kind: AlluxioRuntime
+metadata:
+  name: my-hdfs
+  namespace: alluxio
+spec:
+  properties:
+    alluxio.underfs.hdfs.prefixes: "hdfs://,glusterfs:///,mdfs://"
+    alluxio.master.uri.translator.impl: alluxio.master.file.uritranslator.AutoMountUriTranslator
+    alluxio.worker.network.async.cache.manager.threads.max: "128"
+    alluxio.master.audit.logging.enabled: "false"
+    alluxio.conf.dynamic.update.enabled: "false"
+    alluxio.master.update.check.enabled: "false"
+    alluxio.user.metrics.collection.enabled: "false"
+  hadoopConfig: hdfs-config
+  replicas: 6
+  tieredstore:
+    levels:
+      - mediumtype: SSD
+        path: /dev/shm/alluxio
+        quota: 350Gi
+  worker:
+    jvmOptions:
+      - "-Xmx20g"
+      - "-Xms20g"
+      - "-XX:MaxDirectMemorySize=50g"
+    resources:
+      requests:
+        memory: "70Gi"
+        cpu: 8
+      limits:
+        memory: "70Gi"
+        cpu: 8
+  jobMaster:
+    jvmOptions:
+      - "-Xmx16g"
+      - "-Xms16g"
+      - "-XX:MaxDirectMemorySize=2g"
+    resources:
+      requests:
+        memory: "16Gi"
+        cpu: 2
+      limits:
+        memory: "16Gi"
+        cpu: 2
+  jobWorker:
+    jvmOptions:
+      - "-Xmx16g"
+      - "-Xms16g"
+    resources:
+      requests:
+        memory: "16Gi"
+        cpu: 4
+      limits:
+        memory: "16Gi"
+        cpu: 4
+  master:
+    replicas: 3
+    jvmOptions:
+      - "-server"
+      - "-Xms20g"
+      - "-Xmx20g"
+      - "-XX:ParallelGCThreads=40"
+      - "-XX:MaxDirectMemorySize=4g"
+      - "-XX:+UseG1GC"
+      - "-XX:G1HeapRegionSize=32m"
+      - "-XX:MaxGCPauseMillis=200"
+      - "-XX:MetaspaceSize=2g"
+      - "-XX:+DisableExplicitGC"
+      - "-XX:MaxTenuringThreshold=15"
+    resources:
+      requests:
+        memory: "20Gi"
+        cpu: 8
+      limits:
+        memory: "20Gi"
+        cpu: 8
+  fuse:
+    jvmOptions:
+      - "-Xmx30g"
+      - "-Xms30g"
+    resources:
+      requests:
+        memory: "30Gi"
+        cpu: 4
+      limits:
+        memory: "30Gi"
+        cpu: 4
+    env:
+      MAX_IDLE_THREADS: "64"
+  apiGateway:
+    enabled: false

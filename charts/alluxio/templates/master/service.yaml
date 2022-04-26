@@ -43,6 +43,7 @@ metadata:
     monitor: {{ $metricsLabel }}
     {{- end }}
 spec:
+  publishNotReadyAddresses: true
   ports:
     - port: {{ $masterRpcPort }}
       name: rpc

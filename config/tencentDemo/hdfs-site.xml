@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+<property>
+        <name>tdw.support.raid</name>
+        <value>false</value>
+</property>
+
+<property>
+        <name>mdfs.vnn.address</name>
+        <value>ss-pcg-vnn-server.tencent-distribute.com:9002</value>
+</property>
+
+<property>
+        <name>tdw.support.raid</name>
+        <value>false</value>
+</property>
+
+<property>
+    <name>dfs.replication</name>
+    <value>2</value>
+</property>
+
+<property>
+    <name>dfs.nameservices</name>
+    <value>ss-pcg-6-v2,qy-pcg-4-v3,ss-mig-1-v2,ss-sng-dc-v2,ss-omg-3-v2,ss-omg-1-v2,beacon,safecloud,ss-pcg-3-v2,ss-pcg-4-v2,ss-pcg-5-v2,ss-teg-3-v2,qy-pcg-1-v2,sh-pcg-1-v2</value>
+</property>
+
+<property>
+        <name>dfs.ha.namenodes.ss-pcg-6-v2</name>
+        <value>nn1,nn2</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-6-v2.nn1</name>
+        <value>ss-pcg-6-v2-nn-1.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-6-v2.nn1</name>
+        <value>ss-pcg-6-v2-nn-1.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-6-v2.nn2</name>
+        <value>ss-pcg-6-v2-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-6-v2.nn2</name>
+        <value>ss-pcg-6-v2-nn-2.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-pcg-6-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+        <name>dfs.ha.namenodes.qy-pcg-4-v3</name>
+        <value>nn1,nn2</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.qy-pcg-4-v3.nn1</name>
+        <value>qy-pcg-4-v3-nn-1.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.qy-pcg-4-v3.nn1</name>
+        <value>qy-pcg-4-v3-nn-1.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.qy-pcg-4-v3.nn2</name>
+        <value>qy-pcg-4-v3-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.qy-pcg-4-v3.nn2</name>
+        <value>qy-pcg-4-v3-nn-2.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.qy-pcg-4-v3</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+
+<property>
+        <name>dfs.ha.namenodes.sh-pcg-1-v2</name>
+        <value>nn1,nn2,nn3</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.sh-pcg-1-v2.nn1</name>
+        <value>9.51.21.56:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.sh-pcg-1-v2.nn1</name>
+        <value>9.51.21.56:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.sh-pcg-1-v2.nn2</name>
+        <value>9.51.132.215:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.sh-pcg-1-v2.nn2</name>
+        <value>9.51.132.215:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.sh-pcg-1-v2.nn3</name>
+        <value>9.51.21.203:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.sh-pcg-1-v2.nn3</name>
+        <value>9.51.21.203:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.sh-pcg-1-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+
+<property>
+        <name>dfs.ha.namenodes.qy-pcg-1-v2</name>
+        <value>nn1,nn2,nn3</value>
+        <description>enable HA mode, one nn is active while another is hot backup.</description>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.qy-pcg-1-v2.nn1</name>
+        <value>qy-pcg-1-v2-nn-1.tencent-distribute.com:9000</value>
+        <description>RPC address that handles all clients requests.</description>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.qy-pcg-1-v2.nn1</name>
+        <value>qy-pcg-1-v2-nn-1.tencent-distribute.com:8080</value>
+        <description>
+        The address and the base port where the dfs namenode web ui will listen on.
+        If the port is 0 then the server will start on a free port.
+        </description>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.qy-pcg-1-v2.nn2</name>
+        <value>qy-pcg-1-v2-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.qy-pcg-1-v2.nn2</name>
+        <value>qy-pcg-1-v2-nn-2.tencent-distribute.com:8080</value>
+        <description>
+        The address and the base port where the dfs namenode web ui will listen on.
+        If the port is 0 then the server will start on a free port.
+        </description>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.qy-pcg-1-v2.nn3</name>
+        <value>qy-pcg-1-v2-nn-3.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.qy-pcg-1-v2.nn3</name>
+        <value>qy-pcg-1-v2-nn-3.tencent-distribute.com:8080</value>
+        <description>
+        The address and the base port where the dfs namenode web ui will listen on.
+        If the port is 0 then the server will start on a free port.
+        </description>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.qy-pcg-1-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+
+<property>
+    <name>dfs.ha.namenodes.cluster1</name>
+    <value>nn1,nn2</value>
+</property>
+
+<property>
+    <name>dfs.namenode.rpc-address.cluster1.nn1</name>
+    <value>100.107.152.210:9000</value>
+</property>
+
+<property>
+    <name>dfs.namenode.http-address.cluster1.nn1</name>
+    <value>100.107.152.210:8080</value>
+</property>
+
+<property>
+    <name>dfs.namenode.rpc-address.cluster1.nn2</name>
+    <value>100.107.171.197:9000</value>
+</property>
+
+<property>
+    <name>dfs.namenode.http-address.cluster1.nn2</name>
+    <value>100.107.171.197:8080</value>
+</property>
+
+<property>
+    <name>dfs.client.failover.proxy.provider.cluster1</name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+    <name>dfs.ha.namenodes.safecloud</name>
+    <value>nn1,nn2</value>
+</property>
+<property>
+    <name>dfs.namenode.rpc-address.safecloud.nn1</name>
+    <value>100.110.22.26:9000</value>
+</property>
+
+<property>
+    <name>dfs.namenode.http-address.safecloud.nn1</name>
+    <value>100.110.22.26:8081</value>
+</property>
+
+<property>
+    <name>dfs.namenode.rpc-address.safecloud.nn2</name>
+    <value>100.110.21.116:9000</value>
+</property>
+
+<property>
+    <name>dfs.namenode.http-address.safecloud.nn2</name>
+    <value>100.110.21.116:8081</value>
+</property>
+<property>
+    <name>dfs.client.failover.proxy.provider.safecloud</name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+    <name>dfs.ha.namenodes.beacon</name>
+    <value>nn1,nn2</value>
+</property>
+
+<property>
+    <name>dfs.namenode.rpc-address.beacon.nn1</name>
+    <value>100.110.21.79:9000</value>
+</property>
+
+<property>
+    <name>dfs.namenode.http-address.beacon.nn1</name>
+    <value>100.110.21.79:8081</value>
+</property>
+
+<property>
+    <name>dfs.namenode.rpc-address.beacon.nn2</name>
+    <value>100.110.9.234:9000</value>
+</property>
+
+<property>
+    <name>dfs.namenode.http-address.beacon.nn2</name>
+    <value>100.110.9.234:8081</value>
+</property>
+
+<property>
+    <name>dfs.client.failover.proxy.provider.beacon</name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+        <name>dfs.ha.namenodes.ss-mig-1-v2</name>
+        <value>nn1,nn2,nn3</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-mig-1-v2.nn1</name>
+        <value>ss-mig-1-v2-nn-1.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-mig-1-v2.nn1</name>
+        <value>ss-mig-1-v2-nn-1.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-mig-1-v2.nn2</name>
+        <value>ss-mig-1-v2-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-mig-1-v2.nn2</name>
+        <value>ss-mig-1-v2-nn-2.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-mig-1-v2.nn3</name>
+        <value>ss-mig-1-v2-nn-3.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-mig-1-v2.nn3</name>
+        <value>ss-mig-1-v2-nn-3.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-mig-1-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+
+<property>
+        <name>dfs.ha.namenodes.ss-sng-dc-v2</name>
+        <value>nn1,nn2</value>
+        <description>enable HA mode, one nn is active while another is hot backup.</description>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-sng-dc-v2.nn1</name>
+        <value>ss-sng-dc-v2-nn-1.tencent-distribute.com:9000</value>
+        <description>RPC address that handles all clients requests.</description>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-sng-dc-v2.nn1</name>
+        <value>ss-sng-dc-v2-nn-1.tencent-distribute.com:8081</value>
+        <description>
+        The address and the base port where the dfs namenode web ui will listen on.
+        If the port is 0 then the server will start on a free port.
+        </description>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-sng-dc-v2.nn2</name>
+        <value>ss-sng-dc-v2-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-sng-dc-v2.nn2</name>
+        <value>ss-sng-dc-v2-nn-2.tencent-distribute.com:8081</value>
+        <description>
+        The address and the base port where the dfs namenode web ui will listen on.
+        If the port is 0 then the server will start on a free port.
+        </description>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-sng-dc-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+
+
+<property>
+        <name>dfs.ha.namenodes.ss-omg-3-v2</name>
+        <value>nn1,nn2,nn3</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-omg-3-v2.nn1</name>
+        <value>ss-omg-3-v2-nn-1.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-omg-3-v2.nn1</name>
+        <value>ss-omg-3-v2-nn-1.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-omg-3-v2.nn2</name>
+        <value>ss-omg-3-v2-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-omg-3-v2.nn2</name>
+        <value>ss-omg-3-v2-nn-2.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-omg-3-v2.nn3</name>
+        <value>ss-omg-3-v2-nn-3.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-omg-3-v2.nn3</name>
+        <value>ss-omg-3-v2-nn-3.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-omg-3-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+
+
+<property>
+        <name>dfs.ha.namenodes.ss-omg-1-v2</name>
+        <value>nn1,nn2</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-omg-1-v2.nn1</name>
+        <value>ss-omg-1-v2-nn-1.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-omg-1-v2.nn1</name>
+        <value>ss-omg-1-v2-nn-1.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-omg-1-v2.nn2</name>
+        <value>ss-omg-1-v2-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-omg-1-v2.nn2</name>
+        <value>ss-omg-1-v2-nn-2.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-omg-1-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+        <name>dfs.ha.namenodes.tl-ieg-3-v2</name>
+        <value>nn1,nn2</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.tl-ieg-3-v2.nn1</name>
+        <value>tl-ieg-3-v2-nn-1.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.tl-ieg-3-v2.nn1</name>
+        <value>tl-ieg-3-v2-nn-1.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.tl-ieg-3-v2.nn2</name>
+        <value>tl-ieg-3-v2-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.tl-ieg-3-v2.nn2</name>
+        <value>tl-ieg-3-v2-nn-2.tencent-distribute.com:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.tl-ieg-3-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+        <name>dfs.ha.namenodes.ss-pcg-3-v2</name>
+        <value>nn1,nn2,nn3</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-3-v2.nn1</name>
+        <value>9.189.10.188:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-3-v2.nn1</name>
+        <value>9.189.10.188:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-3-v2.nn2</name>
+        <value>9.189.10.112:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-3-v2.nn2</name>
+        <value>9.189.10.112:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-3-v2.nn3</name>
+        <value>9.189.10.222:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-3-v2.nn3</name>
+        <value>9.189.10.222:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-pcg-3-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+        <name>dfs.ha.namenodes.ss-pcg-4-v2</name>
+        <value>nn1,nn2,nn3</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-4-v2.nn1</name>
+        <value>9.46.3.11:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-4-v2.nn1</name>
+        <value>9.46.3.11:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-4-v2.nn2</name>
+        <value>9.46.6.98:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-4-v2.nn2</name>
+        <value>9.46.6.98:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-4-v2.nn3</name>
+        <value>9.46.3.111:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-4-v2.nn3</name>
+        <value>9.46.3.111:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-pcg-4-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+        <name>dfs.ha.namenodes.ss-pcg-5-v2</name>
+        <value>nn1,nn2,nn3</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-5-v2.nn1</name>
+        <value>9.46.6.52:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-5-v2.nn1</name>
+        <value>9.46.6.52:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-5-v2.nn2</name>
+        <value>9.46.3.107:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-5-v2.nn2</name>
+        <value>9.46.3.107:8080</value>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-pcg-5-v2.nn3</name>
+        <value>9.46.14.33:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-pcg-5-v2.nn3</name>
+        <value>9.46.14.33:8080</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-pcg-5-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+
+<property>
+        <name>dfs.ha.namenodes.ss-teg-3-v2</name>
+        <value>nn1,nn2,nn3</value>
+        <description>enable HA mode, one nn is active while another is hot backup.</description>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-teg-3-v2.nn1</name>
+        <value>ss-teg-3-v2-nn-1.tencent-distribute.com:9000</value>
+        <description>RPC address that handles all clients requests.</description>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-teg-3-v2.nn1</name>
+        <value>ss-teg-3-v2-nn-1.tencent-distribute.com:8080</value>
+        <description>
+        The address and the base port where the dfs namenode web ui will listen on.
+        If the port is 0 then the server will start on a free port.
+        </description>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-teg-3-v2.nn2</name>
+        <value>ss-teg-3-v2-nn-2.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-teg-3-v2.nn2</name>
+        <value>ss-teg-3-v2-nn-2.tencent-distribute.com:8080</value>
+        <description>
+        The address and the base port where the dfs namenode web ui will listen on.
+        If the port is 0 then the server will start on a free port.
+        </description>
+</property>
+
+<property>
+        <name>dfs.namenode.rpc-address.ss-teg-3-v2.nn3</name>
+        <value>ss-teg-3-v2-nn-3.tencent-distribute.com:9000</value>
+</property>
+
+<property>
+        <name>dfs.namenode.http-address.ss-teg-3-v2.nn3</name>
+        <value>ss-teg-3-v2-nn-3.tencent-distribute.com:8080</value>
+        <description>
+        The address and the base port where the dfs namenode web ui will listen on.
+        If the port is 0 then the server will start on a free port.
+        </description>
+</property>
+
+
+<property>
+        <name>dfs.client.failover.proxy.provider.ss-teg-3-v2</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.connection.retries.on.timeouts</name>
+        <value>1</value>
+</property>
+
+<property>
+        <name>dfs.client.failover.connection.retries</name>
+        <value>2</value>
+</property>
+
+
+<property>
+        <name>config.zookeeper.quorum</name>
+        <value>ss-pcg-zk-nd1.tencent-distribute.com:2181,ss-pcg-zk-nd2.tencent-distribute.com:2181,ss-pcg-zk-nd3.tencent-distribute.com:2181,ss-pcg-zk-nd4.tencent-distribute.com:2181,ss-pcg-zk-nd5.tencent-distribute.com:2181</value>
+</property>
+<property>
+        <name>config.load.mode</name>
+        <value>LOCAL</value>
+</property>
+<property>
+        <name>local.config.dir</name>
+        <value>/data/gaiaadmin/gaiaenv/tdwgaia/config</value>
+</property>
+<property>
+        <name>distributed.config.enable</name>
+        <value>true</value>
+</property>
+
+<property>
+    <name>mig.dfs.application.name</name>
+    <value>mtt-spark-new</value>
+</property>
+
+</configuration>

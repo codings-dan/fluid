@@ -193,7 +193,7 @@ func (info *RuntimeInfo) SetupWithDataset(dataset *datav1alpha1.Dataset) {
 // SetupFuseDeployMode setups the fuse deploy mode
 func (info *RuntimeInfo) SetupFuseDeployMode(global bool, nodeSelector map[string]string) {
 	// Since Fluid v0.7.0, global is deprecated.
-	info.fuse.Global = true
+	info.fuse.Global = false
 	info.fuse.NodeSelector = nodeSelector
 }
 

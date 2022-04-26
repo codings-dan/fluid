@@ -8,6 +8,7 @@ resources:
 - bases/data.fluid.io_jindoruntimes.yaml
 - bases/data.fluid.io_goosefsruntimes.yaml
 - bases/data.fluid.io_juicefsruntimes.yaml
+- bases/data.fluid.io_databackups.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patchesStrategicMerge:

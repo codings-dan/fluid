@@ -13,7 +13,7 @@ spec:
             - name: ALLUXIO_INIT_IMAGE_ENV
               value: mirrors.tencent.com/alluxio/alluxiotest/fluid/init-users:0.1
             - name: ALLUXIO_RUNTIME_IMAGE_ENV
-              value: alluxio/alluxio:2.6.2-tq-1.3.1-konajdk11
+              value: mirrors.tencent.com/alluxio/alluxiotest/venus/alluxio:v0.1
             - name: ALLUXIO_FUSE_IMAGE_ENV
-              value: alluxio/alluxio:2.6.2-tq-1.3.1-konajdk11
+              value: mirrors.tencent.com/alluxio/alluxiotest/venus/alluxio:v0.1
 

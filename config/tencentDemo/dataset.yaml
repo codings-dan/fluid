@@ -1,0 +1,12 @@
+apiVersion: data.fluid.io/v1alpha1
+kind: Dataset
+metadata:
+  name: my-hdfs
+  namespace: alluxio
+spec:
+  mounts:
+    - mountPoint: mdfs://cloudhdfs/dsc/venus/mnist
+      name: hdfs
+      options:
+        alluxio.underfs.hdfs.configuration: "/hdfs-config/hdfs-site.xml"
+        alluxio.underfs.version: "2.8.5-tq-0.1.5"
