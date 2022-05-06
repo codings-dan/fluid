@@ -41,6 +41,9 @@ type TargetPath struct {
 
 	// Replicas defines how many replicas will be loaded
 	Replicas int32 `json:"replicas,omitempty"`
+
+	// type defines which way to load data,load2 && distributedLoad,default load2
+	LoadType string `json:"loadType"`
 }
 
 // DataLoadSpec defines the desired state of DataLoad

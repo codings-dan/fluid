@@ -32,7 +32,7 @@ GIT_TAG=$(shell if [ -z "`git status --porcelain`" ]; then git describe --exact-
 GIT_TREE_STATE=$(shell if [ -z "`git status --porcelain`" ]; then echo "clean" ; else echo "dirty"; fi)
 GIT_SHA=$(shell git rev-parse --short HEAD || echo "HEAD")
 #GIT_VERSION=${VERSION}-${GIT_SHA}
-GIT_VERSION=0.1
+GIT_VERSION=0.2
 PACKAGE=github.com/fluid-cloudnative/fluid
 
 # Build binaries
@@ -103,7 +103,7 @@ goosefsruntime-controller-build: generate fmt vet
 juicefsruntime-controller-build: generate fmt vet
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=${GO_MODULE}  go build -gcflags="-N -l" -a -o bin/juicefsruntime-controller -ldflags '-s -w ${LDFLAGS}' cmd/juicefs/main.go
 
-webhook-build: generate fmt vet
+webhook-build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=${GO_MODULE}  go build -gcflags="-N -l" -a -o bin/fluid-webhook -ldflags '${LDFLAGS}' cmd/webhook/main.go
 
 # Debug against the configured Kubernetes cluster in ~/.kube/config, add debug

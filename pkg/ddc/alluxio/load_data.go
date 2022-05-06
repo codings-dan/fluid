@@ -113,6 +113,7 @@ func (e *AlluxioEngine) generateDataLoadValueFile(r cruntime.ReconcileRequestCon
 			Path:        target.Path,
 			Replicas:    target.Replicas,
 			FluidNative: fluidNative,
+			LoadType:    target.LoadType,
 		})
 	}
 	dataloadInfo.TargetPaths = targetPaths

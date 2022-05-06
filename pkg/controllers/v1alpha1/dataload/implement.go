@@ -187,28 +187,30 @@ func (r *DataLoadReconcilerImplement) reconcilePendingDataLoad(ctx cruntime.Reco
 	log.V(1).Info("get target dataset", "targetDataset", targetDataset)
 
 	// 3. Check if there's any Executing DataLoad jobs(conflict DataLoad)
-	conflictDataLoadRef := targetDataset.Status.DataLoadRef
+	// todo delete the conflict logic check
+	//conflictDataLoadRef := targetDataset.Status.DataLoadRef
 	myDataLoadRef := utils.GetDataLoadRef(targetDataload.Name, targetDataload.Namespace)
-	if len(conflictDataLoadRef) != 0 && conflictDataLoadRef != myDataLoadRef {
-		log.V(1).Info("Found other DataLoads that is in Executing phase, will backoff", "other DataLoad", conflictDataLoadRef)
-		r.Recorder.Eventf(&targetDataload,
-			v1.EventTypeNormal,
-			common.DataLoadCollision,
-			"Found other Dataload(%s) that is in Executing phase, will backoff",
-			conflictDataLoadRef)
-		return utils.RequeueAfterInterval(20 * time.Second)
-	}
+	//if len(conflictDataLoadRef) != 0 && conflictDataLoadRef != myDataLoadRef {
+	//	log.Info("Found other DataLoads that is in Executing phase, will backoff", "other DataLoad", conflictDataLoadRef)
+	//	r.Recorder.Eventf(&targetDataload,
+	//		v1.EventTypeNormal,
+	//		common.DataLoadCollision,
+	//		"Found other Dataload(%s) that is in Executing phase, will backoff",
+	//		conflictDataLoadRef)
+	//	return utils.RequeueAfterInterval(20 * time.Second)
+	//}
 
 	// 4. Check if the bounded runtime is ready
-	ready := engine.CheckRuntimeReady()
-	if !ready {
-		log.V(1).Info("Bounded accelerate runtime not ready", "targetDataset", targetDataset)
-		r.Recorder.Eventf(&targetDataload,
-			v1.EventTypeNormal,
-			common.RuntimeNotReady,
-			"Bounded accelerate runtime not ready")
-		return utils.RequeueAfterInterval(20 * time.Second)
-	}
+	// todo delete check dataset is ready logic
+	//ready := engine.CheckRuntimeReady()
+	//if !ready {
+	//	log.Info("Bounded accelerate runtime not ready", "targetDataset", targetDataset)
+	//	r.Recorder.Eventf(&targetDataload,
+	//		v1.EventTypeNormal,
+	//		common.RuntimeNotReady,
+	//		"Bounded accelerate runtime not ready")
+	//	return utils.RequeueAfterInterval(20 * time.Second)
+	//}
 
 	// 5. Check existence of the targetPath in alluxio
 	notExisted, err := engine.CheckExistenceOfPath(targetDataload)

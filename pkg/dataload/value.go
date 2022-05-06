@@ -51,4 +51,7 @@ type TargetPath struct {
 
 	// FluidNative specifies if the path is a native mountPoint(e.g. hostpath or pvc)
 	FluidNative bool `yaml:"fluidNative,omitempty"`
+
+	// LoadType specifies the type to load data,load2 is default
+	LoadType string `json:"loadType"`
 }

@@ -48,6 +48,11 @@ spec:
           {{- $pathReplicas = cat $pathReplicas ( default 1 .replicas ) ":"}}
           {{- end }}
           {{- $pathReplicas = $pathReplicas | nospace | trimSuffix ":"}}
+          {{- $loadTypes := "" }}
+          {{- range .Values.dataloader.targetPaths }}
+          {{- $loadTypes = cat $loadTypes ( default "load2" .loadtype ) ":" }}
+          {{- end }}
+          {{- $loadTypes = $loadTypes | nospace | trimSuffix ":"}}
           env:
             - name: ALLUXIO_CLIENT_HOSTNAME
               valueFrom:
@@ -61,6 +66,8 @@ spec:
               value: {{ $targetPaths | quote }}
             - name: PATH_REPLICAS
               value: {{ $pathReplicas | quote }}
+            - name: LOAD_TYPE
+              value: {{ $loadTypes | quote }}
           envFrom:
             - configMapRef:
                 name: {{ required "targetDataset should be set" .Values.dataloader.targetDataset }}-config

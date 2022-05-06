@@ -79,6 +79,10 @@ spec:
                 items:
                   description: TargetPath defines the target path of the DataLoad
                   properties:
+                    loadType:
+                      description: type defines which way to load data,load2 && distributedLoad,default
+                        load2
+                      type: string
                     path:
                       description: Path defines path to be load
                       type: string
