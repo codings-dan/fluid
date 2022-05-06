@@ -1,0 +1,16 @@
+apiVersion: data.fluid.io/v1alpha1
+kind: DataLoad
+metadata:
+  name: test5
+  namespace: alluxio
+spec:
+  dataset:
+    name: qingyuan-alluxio
+    namespace: alluxio
+  target:
+    - path: /old/2022-04-29/03
+      replicas: 3
+      loadType: load2
+    - path: /old/2022-04-29/04
+      replicas: 1
+      loadType: distributedLoad
