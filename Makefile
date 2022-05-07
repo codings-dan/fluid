@@ -13,6 +13,7 @@ JUICEFSRUNTIME_CONTROLLER_IMG ?= ${IMG_REPO}/juicefsruntime-controller
 CSI_IMG ?= ${IMG_REPO}/fluid-csi
 LOADER_IMG ?= ${IMG_REPO}/fluid-dataloader
 INIT_USERS_IMG ?= ${IMG_REPO}/init-users
+INIT_NODE_INFO_IMG ?= ${IMG_REPO}/node-info
 WEBHOOK_IMG ?= ${IMG_REPO}/fluid-webhook
 GO_MODULE ?= off
 
@@ -175,6 +176,9 @@ docker-build-loader:
 docker-build-init-users:
 	docker build --no-cache charts/alluxio/docker/init-users -t ${INIT_USERS_IMG}:${GIT_VERSION}
 
+docker-build-node-info:
+	docker build --no-cache . -f docker/Dockerfile.nodeinfo -t ${INIT_NODE_INFO_IMG}:${GIT_VERSION}
+
 docker-build-webhook:
 	docker build --no-cache . -f docker/Dockerfile.webhook -t ${WEBHOOK_IMG}:${GIT_VERSION}
 
@@ -202,6 +206,9 @@ docker-push-loader:
 
 docker-push-init-users:
 	docker push ${INIT_USERS_IMG}:${GIT_VERSION}
+
+docker-push-node-info:
+	docker push ${INIT_NODE_INFO_IMG}:${GIT_VERSION}
 
 docker-push-webhook:
 	docker push ${WEBHOOK_IMG}:${GIT_VERSION}

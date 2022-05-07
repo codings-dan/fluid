@@ -40,6 +40,7 @@ spec:
         heritage: {{ .Release.Service }}
         role: alluxio-fuse
     spec:
+      serviceAccountName: fluid-csi
       {{- if .Values.fuse.criticalPod }}
       priorityClassName: system-node-critical
       {{- end }}
@@ -60,6 +61,21 @@ spec:
       securityContext:
         fsGroup: {{ .Values.fuse.fsGroup }}
       initContainers:
+        {{ if .Values.zone -}}
+        - name: init
+          image: mirrors.tencent.com/alluxio/alluxiotest/fluid/node-info:0.2
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: OUTPUT_DIR
+              value: /output
+          volumeMounts:
+            - name: node-data
+              mountPath: /output
+        {{- end }}
         {{ if .Values.initUsers.enabled -}}
         - name: init-fuse
           image: {{ .Values.initUsers.image }}:{{ .Values.initUsers.imageTag }}
@@ -133,6 +149,10 @@ spec:
               mountPath: /etc/group
               readOnly: true
             {{- end }}
+            {{ if .Values.zone -}}
+            - name: node-data
+              mountPath: /location
+            {{- end }}
             - name: alluxio-fuse-device
               mountPath: /dev/fuse
             - name: alluxio-fuse-mount
@@ -158,6 +178,10 @@ spec:
           hostPath:
             path: {{ .Values.initUsers.dir }}/group
             type: FileOrCreate
+        {{- end }}
+        {{ if .Values.zone -}}
+        - name: node-data
+          emptyDir: { }
         {{- end }}
         - name: alluxio-fuse-device
           hostPath:

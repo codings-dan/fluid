@@ -76,6 +76,10 @@ type AlluxioCompTemplateSpec struct {
 	// NodeSelector is a selector which must be true for the master to fit on a node
 	// +optional
 	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
+
+	// Zone select which zone to put alluxio worker
+	// +optional
+	Zone map[string]int `json:"zone,omitempty"`
 }
 
 // AlluxioFuseSpec is a description of the Alluxio Fuse

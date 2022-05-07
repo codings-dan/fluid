@@ -32,6 +32,14 @@ docker system prune
 #make docker-push-webhook
 
 #build dataset controller
-make dataset-controller-build
-make docker-build-dataset-controller
-make docker-push-dataset-controller
+#make dataset-controller-build
+#make docker-build-dataset-controller
+#make docker-push-dataset-controller
+
+##build alluxioruntime controller
+make alluxioruntime-controller-build
+make docker-build-alluxioruntime-controller
+make docker-push-alluxioruntime-controller
+
+#make docker-build-node-info
+#make docker-push-node-info

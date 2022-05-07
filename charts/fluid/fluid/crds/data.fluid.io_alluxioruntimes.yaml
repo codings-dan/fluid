@@ -716,6 +716,11 @@ spec:
                           to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                         type: object
                     type: object
+                  zone:
+                    additionalProperties:
+                      type: integer
+                    description: Zone select which zone to put alluxio worker
+                    type: object
                 type: object
             type: object
           status:

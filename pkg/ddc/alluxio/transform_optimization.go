@@ -112,6 +112,9 @@ func (e *AlluxioEngine) optimizeDefaultProperties(runtime *datav1alpha1.AlluxioR
 			setDefaultProperties(runtime, value, "alluxio.user.direct.memory.io.enabled", "true")
 		}
 	}
+	if runtime.Spec.Worker.Zone != nil {
+		setDefaultProperties(runtime, value, "alluxio.locality.script", "/location/alluxio-locality.sh")
+	}
 }
 
 // optimizeDefaultPropertiesAndFuseForHTTP sets the default value for properties and fuse when the mounts are all HTTP.

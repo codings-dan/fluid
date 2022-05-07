@@ -99,6 +99,10 @@ func (e *AlluxioEngine) transform(runtime *datav1alpha1.AlluxioRuntime) (value *
 
 	// 13.set the placementMode
 	e.transformPlacementMode(dataset, value)
+
+	// 14.transfer zone
+	e.transformZone(runtime, value)
+
 	return
 }
 
@@ -421,5 +425,10 @@ func (e *AlluxioEngine) transformPlacementMode(dataset *datav1alpha1.Dataset, va
 	if len(value.PlacementMode) == 0 {
 		value.PlacementMode = string(datav1alpha1.ExclusiveMode)
 	}
+
+}
+
+func (e *AlluxioEngine) transformZone(runtime *datav1alpha1.AlluxioRuntime, value *Alluxio) {
+	value.Zone = runtime.Spec.Worker.Zone
 
 }
