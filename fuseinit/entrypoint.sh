@@ -69,5 +69,6 @@ fi
 ip=`cat "$OUTPUT_DIR"/labels.txt |grep kubernetes.io/hostname`
 zone=`cat "$OUTPUT_DIR"/labels.txt |grep node.info.kubernetes.io/zone`
 echo "node=${ip##*=},rack=${zone##*=}" >"$OUTPUT_DIR"/alluxio-locality.sh
+chmod 777 "$OUTPUT_DIR"/alluxio-locality.sh
 
 exit 0

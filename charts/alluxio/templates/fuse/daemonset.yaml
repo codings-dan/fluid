@@ -79,7 +79,7 @@ spec:
         {{ if .Values.initUsers.enabled -}}
         - name: init-fuse
           image: {{ .Values.initUsers.image }}:{{ .Values.initUsers.imageTag }}
-          imagePullPolicy: {{ .Values.initUsers.imagePullPolicy }}
+          imagePullPolicy: Always
           command: ["/entrypoint.sh"]
           args:
             - "chmod_fuse_mountpoint"
