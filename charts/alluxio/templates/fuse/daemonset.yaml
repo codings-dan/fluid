@@ -64,7 +64,7 @@ spec:
         {{ if .Values.zone -}}
         - name: init
           image: mirrors.tencent.com/alluxio/alluxiotest/fluid/node-info:0.2
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: NODE
               valueFrom:

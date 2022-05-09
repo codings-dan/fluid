@@ -8,7 +8,7 @@
 #
 # See the NOTICE file distributed with this work for information regarding copyright ownership.
 #
-
+{{ if not .Values.zone -}}
 {{- $shortCircuitEnabled := .Values.shortCircuit.enabled }}
 {{- $needDomainSocketVolume := and $shortCircuitEnabled (eq .Values.shortCircuit.policy "uuid") }}
 {{- $hostNetwork := .Values.worker.hostNetwork }}
@@ -318,3 +318,4 @@ spec:
             claimName: "{{ .name }}"
           {{- end }}
         {{- end }}
+{{- end }}
