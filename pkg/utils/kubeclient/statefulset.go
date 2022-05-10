@@ -27,6 +27,41 @@ func GetStatefulSet(c client.Client, name string, namespace string) (master *app
 	return master, err
 }
 
+func GetPodsForStatefulSetWithMap(c client.Client, ns string, sts map[string]*appsv1.StatefulSet, selector labels.Selector) (pods []v1.Pod, err error) {
+
+	podList := &v1.PodList{}
+	err = c.List(context.TODO(), podList, &client.ListOptions{
+		Namespace:     ns,
+		LabelSelector: selector,
+	})
+
+	if err != nil {
+		log.Error(err, "Failed to list pods for statefulset")
+		return
+	}
+
+	for _, pod := range podList.Items {
+		if isMemberOfWithMap(sts, &pod) {
+			// todo check why the logic is this
+			pods = append(pods, pod)
+			//controllerRef := metav1.GetControllerOf(&pod)
+			//if controllerRef != nil {
+			//	// No controller should care about orphans being deleted.
+			//	matched, err := compareOwnerRefMatcheWithExpected(c, controllerRef, pod.Namespace, sts)
+			//	if err != nil {
+			//		return pods, err
+			//	}
+			//	if matched {
+			//		pods = append(pods, pod)
+			//	}
+			//	// wantedSet, err := resolveControllerRef(c, controllerRef, set.Namespace, statefulSetControllerKind)
+			//}
+		}
+	}
+
+	return
+}
+
 // GetPodsForStatefulSet gets pods of the specified statefulset
 func GetPodsForStatefulSet(c client.Client, sts *appsv1.StatefulSet, selector labels.Selector) (pods []v1.Pod, err error) {
 
@@ -91,11 +126,39 @@ func getParentName(pod *v1.Pod) string {
 func isMemberOf(sts *appsv1.StatefulSet, pod *v1.Pod) bool {
 	return getParentName(pod) == sts.Name
 }
+func isMemberOfWithMap(sts map[string]*appsv1.StatefulSet, pod *v1.Pod) bool {
+	for _, sts := range sts {
+		if getParentName(pod) == sts.Name {
+			return true
+		}
+	}
+	return false
+}
 
 // GetPhaseFromStatefulset gets the phase from statefulset
 func GetPhaseFromStatefulset(replicas int32, sts appsv1.StatefulSet) (phase datav1alpha1.RuntimePhase) {
 	if sts.Status.ReadyReplicas > 0 {
 		if replicas == sts.Status.ReadyReplicas {
+			phase = datav1alpha1.RuntimePhaseReady
+		} else {
+			phase = datav1alpha1.RuntimePhasePartialReady
+		}
+	} else {
+		phase = datav1alpha1.RuntimePhaseNotReady
+	}
+
+	return
+
+}
+
+// GetPhaseFromStatefulset gets the phase from statefulset
+func GetPhaseFromStatefulsetWithMap(replicas int32, stss map[string]*appsv1.StatefulSet) (phase datav1alpha1.RuntimePhase) {
+	var totalRepllicas int32
+	for _, worker := range stss {
+		totalRepllicas = totalRepllicas + worker.Status.ReadyReplicas
+	}
+	if totalRepllicas > 0 {
+		if replicas == totalRepllicas {
 			phase = datav1alpha1.RuntimePhaseReady
 		} else {
 			phase = datav1alpha1.RuntimePhasePartialReady

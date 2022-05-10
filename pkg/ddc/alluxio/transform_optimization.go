@@ -114,6 +114,11 @@ func (e *AlluxioEngine) optimizeDefaultProperties(runtime *datav1alpha1.AlluxioR
 	}
 	if runtime.Spec.Worker.Zone != nil {
 		setDefaultProperties(runtime, value, "alluxio.locality.script", "/location/alluxio-locality.sh")
+		var replicas int
+		for _, replica := range runtime.Spec.Worker.Zone {
+			replicas = replica + replicas
+		}
+		runtime.Spec.Replicas = int32(replicas)
 	}
 }
 

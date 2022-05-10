@@ -17,6 +17,7 @@ package alluxio
 
 import (
 	"context"
+	appsv1 "k8s.io/api/apps/v1"
 	"reflect"
 	"time"
 
@@ -47,14 +48,33 @@ func (e *AlluxioEngine) CheckAndUpdateRuntimeStatus() (ready bool, err error) {
 	}
 
 	// 2. Worker should be ready
-	workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
-		types.NamespacedName{Namespace: e.namespace, Name: workerName})
-	if err != nil {
-		if fluiderrs.IsDeprecated(err) {
-			e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
-			return ready, nil
+	workersList := make(map[string]*appsv1.StatefulSet)
+	if e.runtime.Spec.Worker.Zone != nil {
+		for key, _ := range e.runtime.Spec.Worker.Zone {
+			workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+				types.NamespacedName{Namespace: e.namespace, Name: e.name + "-" + key})
+			if err != nil {
+				if fluiderrs.IsDeprecated(err) {
+					e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
+					return ready, nil
+				}
+				return ready, err
+			} else {
+				workersList[key] = workers
+			}
 		}
-		return ready, err
+	} else {
+		workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+			types.NamespacedName{Namespace: e.namespace, Name: workerName})
+		if err != nil {
+			if fluiderrs.IsDeprecated(err) {
+				e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
+				return ready, nil
+			}
+			return ready, err
+		} else {
+			workersList["noZone"] = workers
+		}
 	}
 
 	err = retry.RetryOnConflict(retry.DefaultBackoff, func() error {
@@ -96,15 +116,22 @@ func (e *AlluxioEngine) CheckAndUpdateRuntimeStatus() (ready bool, err error) {
 		} else {
 			runtimeToUpdate.Status.MasterPhase = data.RuntimePhaseNotReady
 		}
-
-		runtimeToUpdate.Status.WorkerNumberReady = int32(workers.Status.ReadyReplicas)
-		runtimeToUpdate.Status.WorkerNumberUnavailable = int32(*workers.Spec.Replicas - workers.Status.ReadyReplicas)
-		runtimeToUpdate.Status.WorkerNumberAvailable = int32(workers.Status.CurrentReplicas)
-		if workers.Status.ReadyReplicas > 0 {
-			if runtime.Replicas() == workers.Status.ReadyReplicas {
+		var workerReadyReplicas int32
+		var workerSpecReplicas int32
+		var workerCurrentReplicas int32
+		for _, value := range workersList {
+			workerReadyReplicas = workerReadyReplicas + value.Status.ReadyReplicas
+			workerSpecReplicas = *value.Spec.Replicas + workerSpecReplicas
+			workerCurrentReplicas = value.Status.CurrentReplicas + workerCurrentReplicas
+		}
+		runtimeToUpdate.Status.WorkerNumberReady = int32(workerReadyReplicas)
+		runtimeToUpdate.Status.WorkerNumberUnavailable = int32(workerSpecReplicas - workerReadyReplicas)
+		runtimeToUpdate.Status.WorkerNumberAvailable = int32(workerCurrentReplicas)
+		if workerReadyReplicas > 0 {
+			if runtime.Replicas() == workerReadyReplicas {
 				runtimeToUpdate.Status.WorkerPhase = data.RuntimePhaseReady
 				workerReady = true
-			} else if workers.Status.ReadyReplicas >= 1 {
+			} else if workerReadyReplicas >= 1 {
 				runtimeToUpdate.Status.WorkerPhase = data.RuntimePhasePartialReady
 				workerReady = true
 			}

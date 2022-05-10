@@ -21,6 +21,7 @@ import (
 	"github.com/fluid-cloudnative/fluid/pkg/ctrl"
 	fluiderrs "github.com/fluid-cloudnative/fluid/pkg/errors"
 	"github.com/fluid-cloudnative/fluid/pkg/utils"
+	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/util/retry"
@@ -30,26 +31,30 @@ import (
 // over the status by setting phases and conditions. The function
 // calls for a status update and finally returns error if anything unexpected happens.
 func (e *AlluxioEngine) SetupWorkers() (err error) {
-	err = retry.RetryOnConflict(retry.DefaultBackoff, func() error {
-		workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
-			types.NamespacedName{Namespace: e.namespace, Name: e.getWorkerName()})
-		if err != nil {
-			if fluiderrs.IsDeprecated(err) {
-				e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
-				return nil
+	if e.runtime.Spec.Worker.Zone == nil {
+		err = retry.RetryOnConflict(retry.DefaultBackoff, func() error {
+			workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+				types.NamespacedName{Namespace: e.namespace, Name: e.getWorkerName()})
+			if err != nil {
+				if fluiderrs.IsDeprecated(err) {
+					e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
+					return nil
+				}
+				return err
 			}
-			return err
-		}
-		runtime, err := e.getRuntime()
+			runtime, err := e.getRuntime()
+			if err != nil {
+				return err
+			}
+			runtimeToUpdate := runtime.DeepCopy()
+			return e.Helper.SetupWorkers(runtimeToUpdate, runtimeToUpdate.Status, workers)
+		})
 		if err != nil {
+			_ = utils.LoggingErrorExceptConflict(e.Log, err, "Failed to setup workers", types.NamespacedName{Namespace: e.namespace, Name: e.name})
 			return err
 		}
-		runtimeToUpdate := runtime.DeepCopy()
-		return e.Helper.SetupWorkers(runtimeToUpdate, runtimeToUpdate.Status, workers)
-	})
-	if err != nil {
-		_ = utils.LoggingErrorExceptConflict(e.Log, err, "Failed to setup workers", types.NamespacedName{Namespace: e.namespace, Name: e.name})
-		return err
+	}else{
+	//todo
 	}
 	return
 }
@@ -73,15 +78,35 @@ func (e *AlluxioEngine) ShouldSetupWorkers() (should bool, err error) {
 
 // are the workers ready
 func (e *AlluxioEngine) CheckWorkersReady() (ready bool, err error) {
-	workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
-		types.NamespacedName{Namespace: e.namespace, Name: e.getWorkerName()})
-	if err != nil {
-		if fluiderrs.IsDeprecated(err) {
-			e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
-			ready = true
-			return ready, nil
+	workersList := make(map[string]*appsv1.StatefulSet)
+	if e.runtime.Spec.Worker.Zone != nil {
+		for key, _ := range e.runtime.Spec.Worker.Zone {
+			workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+				types.NamespacedName{Namespace: e.namespace, Name: e.name + "-" + key})
+			if err != nil {
+				if fluiderrs.IsDeprecated(err) {
+					e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
+					ready = true
+					return ready, nil
+				}
+				return ready, err
+			} else {
+				workersList[key] = workers
+			}
 		}
-		return ready, err
+	} else {
+		workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+			types.NamespacedName{Namespace: e.namespace, Name: e.getWorkerName()})
+		if err != nil {
+			if fluiderrs.IsDeprecated(err) {
+				e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
+				ready = true
+				return ready, nil
+			}
+			return ready, err
+		} else {
+			workersList["NoZone"] = workers
+		}
 	}
 
 	err = retry.RetryOnConflict(retry.DefaultBackoff, func() error {
@@ -90,7 +115,7 @@ func (e *AlluxioEngine) CheckWorkersReady() (ready bool, err error) {
 			return err
 		}
 		runtimeToUpdate := runtime.DeepCopy()
-		ready, err = e.Helper.CheckWorkersReady(runtimeToUpdate, runtimeToUpdate.Status, workers)
+		ready, err = e.Helper.CheckWorkersReadyWithMap(runtimeToUpdate, runtimeToUpdate.Status, workersList)
 		if err != nil {
 			_ = utils.LoggingErrorExceptConflict(e.Log, err, "Failed to check worker ready", types.NamespacedName{Namespace: e.namespace, Name: e.name})
 		}

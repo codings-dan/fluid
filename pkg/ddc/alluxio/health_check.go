@@ -21,6 +21,7 @@ import (
 	"github.com/fluid-cloudnative/fluid/pkg/common"
 	"github.com/fluid-cloudnative/fluid/pkg/ctrl"
 	fluiderrs "github.com/fluid-cloudnative/fluid/pkg/errors"
+	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"reflect"
 
@@ -155,15 +156,35 @@ func (e *AlluxioEngine) checkMasterHealthy() (err error) {
 // checkWorkersHealthy check workers number changed
 func (e *AlluxioEngine) checkWorkersHealthy() (err error) {
 	// Check the status of workers
-	workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
-		types.NamespacedName{Namespace: e.namespace, Name: e.getWorkerName()})
-	if err != nil {
-		if fluiderrs.IsDeprecated(err) {
-			e.Log.Info("Warning: the current runtime is created by runtime controller before v0.7.0, checking worker health state is not supported. To support these features, please create a new dataset", "details", err)
-			e.Recorder.Event(e.runtime, corev1.EventTypeWarning, common.RuntimeDeprecated, "The runtime is created by controllers before v0.7.0, to fully enable latest capabilities, please delete the runtime and create a new one")
-			return nil
+	workersList := make(map[string]*appsv1.StatefulSet)
+	if e.runtime.Spec.Worker.Zone != nil {
+		for key, _ := range e.runtime.Spec.Worker.Zone {
+			workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+				types.NamespacedName{Namespace: e.namespace, Name: e.name + "-" + key})
+			if err != nil {
+				if fluiderrs.IsDeprecated(err) {
+					e.Log.Info("Warning: the current runtime is created by runtime controller before v0.7.0, checking worker health state is not supported. To support these features, please create a new dataset", "details", err)
+					e.Recorder.Event(e.runtime, corev1.EventTypeWarning, common.RuntimeDeprecated, "The runtime is created by controllers before v0.7.0, to fully enable latest capabilities, please delete the runtime and create a new one")
+					return nil
+				}
+				return err
+			} else {
+				workersList[key] = workers
+			}
 		}
-		return err
+	} else {
+		workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+			types.NamespacedName{Namespace: e.namespace, Name: e.getWorkerName()})
+		if err != nil {
+			if fluiderrs.IsDeprecated(err) {
+				e.Log.Info("Warning: the current runtime is created by runtime controller before v0.7.0, checking worker health state is not supported. To support these features, please create a new dataset", "details", err)
+				e.Recorder.Event(e.runtime, corev1.EventTypeWarning, common.RuntimeDeprecated, "The runtime is created by controllers before v0.7.0, to fully enable latest capabilities, please delete the runtime and create a new one")
+				return nil
+			}
+			return err
+		} else {
+			workersList["noZone"] = workers
+		}
 	}
 
 	healthy := false
@@ -175,16 +196,24 @@ func (e *AlluxioEngine) checkWorkersHealthy() (err error) {
 		}
 
 		runtimeToUpdate := runtime.DeepCopy()
-		if workers.Status.ReadyReplicas == 0 && *workers.Spec.Replicas > 0 {
+		var workerReadyReplicas int32
+		var workerSpecReplicas int32
+		var workerCurrentReplicas int32
+		for _, value := range workersList {
+			workerReadyReplicas = workerReadyReplicas + value.Status.ReadyReplicas
+			workerSpecReplicas = *value.Spec.Replicas + workerSpecReplicas
+			workerCurrentReplicas = value.Status.CurrentReplicas + workerCurrentReplicas
+		}
+		if workerReadyReplicas == 0 && workerSpecReplicas > 0 {
 			// if workers.Status.NumberReady != workers.Status.DesiredNumberScheduled {
 			if len(runtimeToUpdate.Status.Conditions) == 0 {
 				runtimeToUpdate.Status.Conditions = []data.RuntimeCondition{}
 			}
 			cond := utils.NewRuntimeCondition(data.RuntimeWorkersReady, "The workers are not ready.",
 				fmt.Sprintf("The statefulset %s in %s are not ready, the Unavailable number is %d, please fix it.",
-					workers.Name,
-					workers.Namespace,
-					*workers.Spec.Replicas-workers.Status.ReadyReplicas), corev1.ConditionFalse)
+					e.name+"-worker",
+					e.namespace,
+					workerSpecReplicas-workerReadyReplicas), corev1.ConditionFalse)
 
 			_, oldCond := utils.GetRuntimeCondition(runtimeToUpdate.Status.Conditions, cond.Type)
 
@@ -215,8 +244,8 @@ func (e *AlluxioEngine) checkWorkersHealthy() (err error) {
 			// runtimeToUpdate.Status.WorkerPhase = data.RuntimePhaseReady
 		}
 		// runtimeToUpdate.Status.DesiredWorkerNumberScheduled = int32(workers.Status.DesiredNumberScheduled)
-		runtimeToUpdate.Status.WorkerNumberReady = int32(workers.Status.ReadyReplicas)
-		runtimeToUpdate.Status.WorkerNumberAvailable = int32(workers.Status.CurrentReplicas)
+		runtimeToUpdate.Status.WorkerNumberReady = workerReadyReplicas
+		runtimeToUpdate.Status.WorkerNumberAvailable = workerCurrentReplicas
 		if !reflect.DeepEqual(runtime.Status, runtimeToUpdate.Status) {
 			updateErr := e.Client.Status().Update(context.TODO(), runtimeToUpdate)
 			if updateErr != nil {
@@ -233,10 +262,9 @@ func (e *AlluxioEngine) checkWorkersHealthy() (err error) {
 	}
 
 	if !healthy {
-		err = fmt.Errorf("the workers %s in %s are not ready, the unhealthy number %d",
-			workers.Name,
-			workers.Namespace,
-			*workers.Spec.Replicas-workers.Status.ReadyReplicas)
+		err = fmt.Errorf("the workers %s in %s are not ready",
+			e.name+"-worker",
+			e.namespace)
 	}
 
 	return err

@@ -165,3 +165,58 @@ func (e *Helper) CheckWorkersReady(runtime base.RuntimeInterface,
 
 	return
 }
+
+// CheckWorkersReadyMap checks if workers are ready
+func (e *Helper) CheckWorkersReadyWithMap(runtime base.RuntimeInterface,
+	currentStatus datav1alpha1.RuntimeStatus,
+	workers map[string]*appsv1.StatefulSet) (ready bool, err error) {
+
+	var (
+		phase datav1alpha1.RuntimePhase     = kubeclient.GetPhaseFromStatefulsetWithMap(runtime.Replicas(), workers)
+		cond  datav1alpha1.RuntimeCondition = datav1alpha1.RuntimeCondition{}
+	)
+
+	switch phase {
+	case datav1alpha1.RuntimePhaseReady, datav1alpha1.RuntimePhasePartialReady:
+		ready = true
+	default:
+		e.log.Info("workers are not ready", "phase", phase)
+	}
+
+	// update the status as the workers are ready
+	if phase != currentStatus.WorkerPhase {
+		statusToUpdate := runtime.GetStatus()
+		statusToUpdate.WorkerPhase = phase
+
+		if len(statusToUpdate.Conditions) == 0 {
+			statusToUpdate.Conditions = []datav1alpha1.RuntimeCondition{}
+		}
+
+		switch phase {
+		case datav1alpha1.RuntimePhaseReady:
+			cond = utils.NewRuntimeCondition(datav1alpha1.RuntimeWorkersReady, datav1alpha1.RuntimeWorkersReadyReason,
+				"The workers are ready.", corev1.ConditionTrue)
+		case datav1alpha1.RuntimePhasePartialReady:
+			cond = utils.NewRuntimeCondition(datav1alpha1.RuntimeWorkersReady, datav1alpha1.RuntimeWorkersReadyReason,
+				"The workers are partially ready.", corev1.ConditionTrue)
+		case datav1alpha1.RuntimePhaseNotReady:
+			cond = utils.NewRuntimeCondition(datav1alpha1.RuntimeWorkersReady, datav1alpha1.RuntimeWorkersReadyReason,
+				"The workers are not ready.", corev1.ConditionFalse)
+		}
+
+		if cond.Type != "" {
+			statusToUpdate.Conditions =
+				utils.UpdateRuntimeCondition(statusToUpdate.Conditions,
+					cond)
+		}
+
+		if !reflect.DeepEqual(currentStatus, statusToUpdate) {
+			err = e.client.Status().Update(context.TODO(), runtime)
+		}
+
+	} else {
+		e.log.V(1).Info("No need to update runtime status for checking healthy")
+	}
+
+	return
+}

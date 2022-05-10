@@ -18,6 +18,7 @@ package alluxio
 import (
 	"context"
 	"fmt"
+	appsv1 "k8s.io/api/apps/v1"
 	"time"
 
 	"github.com/fluid-cloudnative/fluid/pkg/ctrl"
@@ -62,14 +63,33 @@ func (e *AlluxioEngine) SyncScheduleInfoToCacheNodes() (err error) {
 		previousCacheNodenames []string
 	)
 
-	workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
-		types.NamespacedName{Namespace: e.namespace, Name: e.getWorkerName()})
-	if err != nil {
-		if fluiderrs.IsDeprecated(err) {
-			e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
-			return nil
+	workersList := make(map[string]*appsv1.StatefulSet)
+	if e.runtime.Spec.Worker.Zone != nil {
+		for key, _ := range e.runtime.Spec.Worker.Zone {
+			workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+				types.NamespacedName{Namespace: e.namespace, Name: e.name + "-" + key})
+			if err != nil {
+				if fluiderrs.IsDeprecated(err) {
+					e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
+					return nil
+				}
+				return err
+			} else {
+				workersList[key] = workers
+			}
 		}
-		return err
+	} else {
+		workers, err := ctrl.GetWorkersAsStatefulset(e.Client,
+			types.NamespacedName{Namespace: e.namespace, Name: e.getWorkerName()})
+		if err != nil {
+			if fluiderrs.IsDeprecated(err) {
+				e.Log.Info("Warning: Deprecated mode is not support, so skip handling", "details", err)
+				return nil
+			}
+			return err
+		} else {
+			workersList["noZone"] = workers
+		}
 	}
 
 	workerSelector, err := labels.Parse(fmt.Sprintf("fluid.io/dataset=%s-%s,app=alluxio,role=alluxio-worker", e.namespace, e.name))
@@ -77,7 +97,7 @@ func (e *AlluxioEngine) SyncScheduleInfoToCacheNodes() (err error) {
 		return err
 	}
 
-	workerPods, err := kubeclient.GetPodsForStatefulSet(e.Client, workers, workerSelector)
+	workerPods, err := kubeclient.GetPodsForStatefulSetWithMap(e.Client, e.namespace, workersList, workerSelector)
 	if err != nil {
 		return err
 	}
