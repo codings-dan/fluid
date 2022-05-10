@@ -16,6 +16,8 @@ limitations under the License.
 package alluxio
 
 import (
+	"context"
+	"fmt"
 	"github.com/fluid-cloudnative/fluid/pkg/ctrl"
 	fluiderrs "github.com/fluid-cloudnative/fluid/pkg/errors"
 	cruntime "github.com/fluid-cloudnative/fluid/pkg/runtime"
@@ -49,7 +51,22 @@ func (e *AlluxioEngine) SyncReplicas(ctx cruntime.ReconcileRequestContext) (err 
 			_ = utils.LoggingErrorExceptConflict(e.Log, err, "Failed to sync replicas", types.NamespacedName{Namespace: e.namespace, Name: e.name})
 		}
 	} else {
-		//todo 修改replica
+		runtime, err := e.getRuntime()
+		if err != nil {
+			return err
+		}
+		for zoneName, zoneReplica := range runtime.Spec.Worker.Zone {
+			workers, _ := ctrl.GetWorkersAsStatefulset(e.Client,
+				types.NamespacedName{Namespace: e.namespace, Name: e.name + "-" + zoneName})
+			if *workers.Spec.Replicas != int32(zoneReplica) {
+				e.Log.Info("execute")
+				*workers.Spec.Replicas = int32(zoneReplica)
+				err = e.Client.Update(context.TODO(), workers)
+				if err != nil {
+					e.Log.Error(err, fmt.Sprintf("Fail to sync replicas for %s", zoneName))
+				}
+			}
+		}
 
 	}
 	return
