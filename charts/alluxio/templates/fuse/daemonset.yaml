@@ -40,7 +40,7 @@ spec:
         heritage: {{ .Release.Service }}
         role: alluxio-fuse
     spec:
-      serviceAccountName: fluid-csi
+      serviceAccountName: node-info
       {{- if .Values.fuse.criticalPod }}
       priorityClassName: system-node-critical
       {{- end }}
