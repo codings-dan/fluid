@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	datav1alpha1 "github.com/fluid-cloudnative/fluid/api/v1alpha1"
@@ -148,11 +149,18 @@ func (e *AlluxioEngine) transformCommonPart(runtime *datav1alpha1.AlluxioRuntime
 	value.Properties["alluxio.master.mount.table.root.ufs"] = uRootPath
 
 	// Set the max replication
-	dataReplicas := runtime.Spec.Data.Replicas
-	if dataReplicas <= 0 {
-		dataReplicas = 1
+
+	i, err := strconv.ParseInt(value.Properties["alluxio.user.file.replication.max"], 10, 32)
+	if err == nil {
+		replication := int32(i)
+		if replication <= 0 {
+			if runtime.Spec.Data.Replicas != replication {
+				value.Properties["alluxio.user.file.replication.max"] = fmt.Sprintf("%d", runtime.Spec.Data.Replicas)
+			}
+		} else {
+			value.Properties["alluxio.user.file.replication.max"] = fmt.Sprintf("%d", replication)
+		}
 	}
-	value.Properties["alluxio.user.file.replication.max"] = fmt.Sprintf("%d", dataReplicas)
 
 	if len(runtime.Spec.JvmOptions) > 0 {
 		value.JvmOptions = runtime.Spec.JvmOptions
