@@ -322,7 +322,9 @@ func (e *AlluxioEngine) transformWorkers(runtime *datav1alpha1.AlluxioRuntime, v
 	value.Worker = Worker{}
 	e.optimizeDefaultForWorker(runtime, value)
 
-	if len(value.Worker.NodeSelector) == 0 {
+	if runtime.Spec.Worker.NodeSelector != nil {
+		value.Worker.NodeSelector = runtime.Spec.Worker.NodeSelector
+	} else {
 		value.Worker.NodeSelector = map[string]string{}
 	}
 
